@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/views/home/home_screen.dart';
 
 void main() {
@@ -12,11 +14,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomeScreen(),
+      theme: ThemeData.dark().copyWith(
+          useMaterial3: false,
+          primaryColor: primaryColor,
+          scaffoldBackgroundColor: secondaryColor,
+          canvasColor: bgColor,
+          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+              .apply(bodyColor: Colors.white)
+              .copyWith(
+                bodySmall: const TextStyle(color: bodyTextColor),
+                bodyMedium: const TextStyle(color: bodyTextColor),
+              )),
+      home: HomeScreen(),
     );
   }
 }
