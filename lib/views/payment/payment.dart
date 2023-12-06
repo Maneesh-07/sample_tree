@@ -133,17 +133,17 @@ class PaymentContainerWidget extends StatelessWidget {
                 Text(
                   text1,
                   style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                      ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor)
-                      : Theme.of(context).textTheme.titleLarge!.copyWith(
+                      : Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor),
                 ),
                 Text(
                   text2,
                   style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                      ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor)
-                      : Theme.of(context).textTheme.titleLarge!.copyWith(
+                      : Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor),
                 ),
               ],

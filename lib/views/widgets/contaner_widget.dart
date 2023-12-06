@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/responsive.dart';
+import 'package:sample_tree/views/widgets/animated_linear.dart';
 
 class ContainerWidget extends StatelessWidget {
   final String text1;
   final String text2;
   final String imgUrl;
+  final int index;
   final VoidCallback onTap;
   const ContainerWidget({
     super.key,
@@ -13,7 +15,15 @@ class ContainerWidget extends StatelessWidget {
     required this.text2,
     required this.imgUrl,
     required this.onTap,
+    required this.index,
   });
+
+  static List<Color> colors = [
+    Colors.deepPurple,
+    Colors.redAccent,
+    Colors.pink.shade500,
+    Colors.blue,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -60,21 +70,17 @@ class ContainerWidget extends StatelessWidget {
                 Text(
                   text1,
                   style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                      ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor)
-                      : Theme.of(context).textTheme.titleLarge!.copyWith(
+                      : Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 20,
                 ),
-                Text(
-                  text2,
-                  style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w100, color: whiteColor)
-                      : Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w300, color: whiteColor),
+                AnimatedLinearProgressIndicator(
+                  label: text2,
+                  color: colors[index],
                 ),
               ],
             ),

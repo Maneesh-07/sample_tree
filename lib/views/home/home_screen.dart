@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/responsive.dart';
 import 'package:sample_tree/views/payment/payment.dart';
@@ -18,9 +17,17 @@ class HomeScreen extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Responsive.isMobile(context)
-                  ? _buildCustomAppBar(context)
-                  : _buildCustomAppBar(context),
+              if (!Responsive.isMobileLarge(context))
+                const SizedBox(
+                  height: defaultPadding / 2,
+                ),
+              _buildCustomAppBar(context),
+              const SizedBox(
+                height: defaultPadding,
+              ),
+              // Responsive.isDesktop(context)
+              //     ? _buildCustomAppBar(context)
+              //     : _buildCustomAppBar(context),
               _buildTabBarView(context),
             ],
           ),
@@ -34,12 +41,12 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         padding: const EdgeInsets.only(top: defaultPadding),
-        height: Responsive.isMobile(context)
+        height: Responsive.isDesktop(context)
             ? MediaQuery.of(context).size.height * 0.23
-            : MediaQuery.of(context).size.height * 0.23,
-        width: Responsive.isMobile(context)
+            : MediaQuery.of(context).size.height * 0.25,
+        width: Responsive.isMobile(context) || Responsive.isTablet(context)
             ? MediaQuery.of(context).size.width * defaultPadding
-            : MediaQuery.of(context).size.width * 0.25,
+            : MediaQuery.of(context).size.width * 0.50,
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 12, 10, 54),
           borderRadius: BorderRadius.circular(30),
@@ -54,33 +61,68 @@ class HomeScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 10,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Welcome!",
-                style: Responsive.isDesktop(context)
-                    ? Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white)
-                    : Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                maxLines: Responsive.isMobileLarge(context) ? 3 : 4,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                "Daily News",
-                style: Responsive.isDesktop(context)
-                    ? Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white)
-                    : Theme.of(context).textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                maxLines: Responsive.isMobileLarge(context) ? 2 : 4,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CircleAvatar(
+                        backgroundColor: Colors.blue,
+                        radius: 10,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Welcome!",
+                        style: Responsive.isDesktop(context)
+                            ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)
+                            : Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                        maxLines: Responsive.isMobileLarge(context) ? 3 : 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        "Daily News",
+                        style: Responsive.isDesktop(context)
+                            ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)
+                            : Theme.of(context).textTheme.titleLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                        maxLines: Responsive.isMobileLarge(context) ? 2 : 4,
+                      ),
+                    ],
+                  ),
+                  ClipOval(
+                    child: Container(
+                      height: Responsive.isDesktop(context)
+                          ? MediaQuery.of(context).size.height * 0.10
+                          : MediaQuery.sizeOf(context).height * 0.18,
+                      width: Responsive.isDesktop(context)
+                          ? MediaQuery.of(context).size.width * 0.10
+                          : MediaQuery.sizeOf(context).width * 0.35,
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 47, 44, 44)
+                                .withOpacity(0.2),
+                            spreadRadius: 2,
+                            blurRadius: 3,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ],
           ),
@@ -101,37 +143,41 @@ class HomeScreen extends StatelessWidget {
                 Tab(
                   child: Text(
                     "Home",
-                    style: GoogleFonts.robotoSerif(
-                      fontSize: 14,
-                      color: whiteColor,
-                    ),
+                    style: Responsive.isDesktop(context)
+                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor)
+                        : Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor),
                   ),
                 ),
                 Tab(
                   child: Text(
                     "Payment",
-                    style: GoogleFonts.robotoSerif(
-                      fontSize: 14,
-                      color: whiteColor,
-                    ),
+                    style: Responsive.isDesktop(context)
+                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor)
+                        : Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor),
                   ),
                 ),
                 Tab(
                   child: Text(
                     "Review us",
-                    style: GoogleFonts.robotoSerif(
-                      fontSize: 14,
-                      color: whiteColor,
-                    ),
+                    style: Responsive.isDesktop(context)
+                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor)
+                        : Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor),
                   ),
                 ),
                 Tab(
                   child: Text(
                     "Follow Us",
-                    style: GoogleFonts.robotoSerif(
-                      fontSize: 14,
-                      color: whiteColor,
-                    ),
+                    style: Responsive.isDesktop(context)
+                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor)
+                        : Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.bold, color: whiteColor),
                   ),
                 ),
               ],

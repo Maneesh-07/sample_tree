@@ -31,6 +31,8 @@ class ProjectsGridView extends StatelessWidget {
     'assets/instagram.png',
     'assets/facebook.png',
   ];
+
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -41,7 +43,7 @@ class ProjectsGridView extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             childAspectRatio: childAspectRatio,
-            crossAxisSpacing: defaultPadding / 3,
+            crossAxisSpacing: defaultPadding * 0.1,
             mainAxisSpacing: defaultPadding,
           ),
           itemCount: 4,
@@ -50,6 +52,7 @@ class ProjectsGridView extends StatelessWidget {
             text2: text2[index],
             imgUrl: imageContent[index],
             onTap: () => _navigateToNextPage(context, index),
+            index: index,
           ),
         ),
       ),
