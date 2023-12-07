@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/responsive.dart';
+import 'package:sample_tree/views/follow_us/follow_us.dart';
 import 'package:sample_tree/views/payment/payment.dart';
 import 'package:sample_tree/views/review/review_us.dart';
 import 'package:sample_tree/views/widgets/myproject.dart';
@@ -48,13 +49,14 @@ class HomeScreen extends StatelessWidget {
             ? MediaQuery.of(context).size.width * defaultPadding
             : MediaQuery.of(context).size.width * 0.50,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 12, 10, 54),
+          color: bgColor.withOpacity(0.2),
           borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
+              color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
               spreadRadius: 0,
               blurRadius: 1,
-              offset: Offset(0, 1),
+              offset: const Offset(0, 1),
             ),
           ],
         ),
@@ -78,24 +80,31 @@ class HomeScreen extends StatelessWidget {
                       Text(
                         "Welcome!",
                         style: Responsive.isDesktop(context)
-                            ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                            ? Theme.of(context).textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
                                 color: Colors.white)
                             : Theme.of(context).textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.white,
+                                letterSpacing: 2),
                         maxLines: Responsive.isMobileLarge(context) ? 3 : 4,
                         overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Text(
                         "Daily News",
                         style: Responsive.isDesktop(context)
                             ? Theme.of(context).textTheme.titleMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white)
+                                color: Colors.white,
+                                letterSpacing: 1)
                             : Theme.of(context).textTheme.titleLarge!.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                                color: Colors.white,
+                                letterSpacing: 1),
                         maxLines: Responsive.isMobileLarge(context) ? 2 : 4,
                       ),
                     ],
@@ -109,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                           ? MediaQuery.of(context).size.width * 0.10
                           : MediaQuery.sizeOf(context).width * 0.35,
                       decoration: BoxDecoration(
-                        color: bgColor,
+                        color: darkColor,
                         boxShadow: [
                           BoxShadow(
                             color: const Color.fromARGB(255, 47, 44, 44)
@@ -145,9 +154,13 @@ class HomeScreen extends StatelessWidget {
                     "Home",
                     style: Responsive.isDesktop(context)
                         ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor)
-                        : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor),
+                            fontWeight: FontWeight.bold,
+                            color: whiteColor,
+                            letterSpacing: 1)
+                        : Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: whiteColor,
+                            letterSpacing: 1),
                   ),
                 ),
                 Tab(
@@ -155,9 +168,14 @@ class HomeScreen extends StatelessWidget {
                     "Payment",
                     style: Responsive.isDesktop(context)
                         ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor)
-                        : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor),
+                              fontWeight: FontWeight.bold,
+                              color: whiteColor,
+                              letterSpacing: 1,
+                            )
+                        : Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: whiteColor,
+                            letterSpacing: 1),
                   ),
                 ),
                 Tab(
@@ -165,9 +183,15 @@ class HomeScreen extends StatelessWidget {
                     "Review us",
                     style: Responsive.isDesktop(context)
                         ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor)
+                              fontWeight: FontWeight.bold,
+                              color: whiteColor,
+                              letterSpacing: 1,
+                            )
                         : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor),
+                              fontWeight: FontWeight.bold,
+                              color: whiteColor,
+                              letterSpacing: 0.5,
+                            ),
                   ),
                 ),
                 Tab(
@@ -175,9 +199,12 @@ class HomeScreen extends StatelessWidget {
                     "Follow Us",
                     style: Responsive.isDesktop(context)
                         ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor)
+                            fontWeight: FontWeight.bold, color: whiteColor,letterSpacing: 1)
                         : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold, color: whiteColor),
+                              fontWeight: FontWeight.bold,
+                              color: whiteColor,
+                              letterSpacing: 0.5,
+                            ),
                   ),
                 ),
               ],
@@ -188,7 +215,7 @@ class HomeScreen extends StatelessWidget {
                   MyProjects(),
                   PaymentScreen(),
                   ReviewScreen(),
-                  MyProjects(),
+                  FollowScreen(),
                 ],
               ),
             ),

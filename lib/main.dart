@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
           useMaterial3: false,
           primaryColor: primaryColor,
-          scaffoldBackgroundColor: secondaryColor,
+          scaffoldBackgroundColor: scaffoldBgColor,
           canvasColor: bgColor,
-          textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
+          textTheme: GoogleFonts.arimoTextTheme(Theme.of(context).textTheme)
               .apply(bodyColor: Colors.white)
               .copyWith(
                 bodySmall: const TextStyle(color: bodyTextColor),

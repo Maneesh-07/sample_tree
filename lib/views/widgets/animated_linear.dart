@@ -6,7 +6,8 @@ class AnimatedLinearProgressIndicator extends StatelessWidget {
   final Color color;
   const AnimatedLinearProgressIndicator({
     super.key,
-    required this.label, required this.color,
+    required this.label,
+    required this.color,
   });
 
   final String label;
@@ -26,12 +27,14 @@ class AnimatedLinearProgressIndicator extends StatelessWidget {
                 Text(
                   label,
                   style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.bodySmall!.copyWith(
+                      ? Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w300, color: whiteColor)
-                      : Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.w200,
-                          color: whiteColor,
-                          fontSize: 10),
+                      : Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: whiteColor,
+                            letterSpacing: 1,
+                            fontSize: 12,
+                          ),
                 ),
               ],
             ),

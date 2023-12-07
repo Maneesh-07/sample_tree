@@ -38,7 +38,7 @@ class ContainerWidget extends StatelessWidget {
               : MediaQuery.sizeOf(context).width * 0.23,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: bgColor,
+            color: bgColor.withOpacity(0.2),
             boxShadow: [
               BoxShadow(
                 color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
@@ -58,7 +58,7 @@ class ContainerWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 5),
                   child: CircleAvatar(
                     backgroundColor: Colors.blue.shade50,
-                    radius: 20,
+                    radius: 25,
                     child: Responsive.isMobile(context)
                         ? Image.asset(imgUrl)
                         : Image.network(imgUrl),
@@ -67,20 +67,31 @@ class ContainerWidget extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  text1,
-                  style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold, color: whiteColor)
-                      : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold, color: whiteColor),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(
+                    text1,
+                    style: Responsive.isDesktop(context)
+                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: whiteColor,
+                              letterSpacing: 3
+                            )
+                        : Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: whiteColor,
+                            letterSpacing: 2),
+                  ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
-                AnimatedLinearProgressIndicator(
-                  label: text2,
-                  color: colors[index],
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: AnimatedLinearProgressIndicator(
+                    label: text2,
+                    color: colors[index],
+                  ),
                 ),
               ],
             ),

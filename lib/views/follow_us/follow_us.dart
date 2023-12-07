@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/responsive.dart';
 
-class PaymentScreen extends StatelessWidget {
-  const PaymentScreen({super.key});
+class FollowScreen extends StatelessWidget {
+  const FollowScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +15,17 @@ class PaymentScreen extends StatelessWidget {
             height: defaultPadding,
           ),
           Responsive(
-            mobile: PaymentsGridView(
+            mobile: FollowGridView(
               crossAxisCount: 2,
               childAspectRatio: 1,
             ),
-            mobileLarge: PaymentsGridView(
+            mobileLarge: FollowGridView(
               crossAxisCount: 2,
             ),
-            tablet: PaymentsGridView(
+            tablet: FollowGridView(
               childAspectRatio: 1.1,
             ),
-            desktop: PaymentsGridView(
+            desktop: FollowGridView(
               crossAxisCount: 4,
             ),
           ),
@@ -35,29 +35,27 @@ class PaymentScreen extends StatelessWidget {
   }
 }
 
-class PaymentsGridView extends StatelessWidget {
-  final TabController? tabController;
-  const PaymentsGridView({
+class FollowGridView extends StatelessWidget {
+  const FollowGridView({
     super.key,
     this.crossAxisCount = 3,
     this.childAspectRatio = 1.3,
-    this.tabController,
   });
   final int crossAxisCount;
   final double childAspectRatio;
 
   static const List<String> contentNames = [
-    'RazorPay',
-    'GooglePay',
-    'PhonePay',
-    'Paypal',
+    'Instagram',
+    'facebook',
+    'Twitter',
+    'Linkedln',
   ];
 
-  static const List<String> imagesItems = [
-    'assets/razorpay.png',
-    'assets/gpay.png',
-    'assets/phonepe.png',
-    'assets/paypal.png',
+  static const List<String> imageItem = [
+    '',
+    '',
+    '',
+    '',
   ];
   @override
   Widget build(BuildContext context) {
@@ -74,9 +72,10 @@ class PaymentsGridView extends StatelessWidget {
           ),
           itemCount: 4,
           itemBuilder: (BuildContext context, int index) =>
-              PaymentContainerWidget(
+              ContainerFollowWidget(
             text1: contentNames[index],
-            imgUrl: imagesItems[index],
+            text2: '',
+            imgUrl: '',
             onTap: () {},
           ),
         ),
@@ -85,14 +84,15 @@ class PaymentsGridView extends StatelessWidget {
   }
 }
 
-class PaymentContainerWidget extends StatelessWidget {
+class ContainerFollowWidget extends StatelessWidget {
   final String text1;
-
+  final String text2;
   final String imgUrl;
   final VoidCallback onTap;
-  const PaymentContainerWidget({
+  const ContainerFollowWidget({
     super.key,
     required this.text1,
+    required this.text2,
     required this.imgUrl,
     required this.onTap,
   });
@@ -110,7 +110,7 @@ class PaymentContainerWidget extends StatelessWidget {
               : MediaQuery.sizeOf(context).width * 0.23,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: bgColor.withOpacity(0.3),
+            color: bgColor,
             boxShadow: [
               BoxShadow(
                 color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
@@ -126,19 +126,11 @@ class PaymentContainerWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ClipOval(
+                Padding(
+                  padding: const EdgeInsets.only(left: 5),
                   child: CircleAvatar(
-                    backgroundColor: whiteColor,
-                    radius: 25,
-                    child: Responsive.isMobile(context)
-                        ? Image.asset(
-                            imgUrl,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            imgUrl,
-                            fit: BoxFit.fill,
-                          ),
+                    backgroundColor: Colors.blue.shade50,
+                    radius: 20,
                   ),
                 ),
                 const SizedBox(
@@ -151,6 +143,9 @@ class PaymentContainerWidget extends StatelessWidget {
                           fontWeight: FontWeight.bold, color: whiteColor)
                       : Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.bold, color: whiteColor),
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
               ],
             ),
