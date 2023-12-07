@@ -56,12 +56,14 @@ class ContainerWidget extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.blue.shade50,
-                    radius: 25,
-                    child: Responsive.isMobile(context)
-                        ? Image.asset(imgUrl)
-                        : Image.network(imgUrl),
+                  child: ClipOval(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.blue.shade50,
+                      radius: 25,
+                      child: Responsive.isMobile(context)
+                          ? Image.asset(imgUrl)
+                          : Image.network(imgUrl),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -73,10 +75,9 @@ class ContainerWidget extends StatelessWidget {
                     text1,
                     style: Responsive.isDesktop(context)
                         ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: whiteColor,
-                              letterSpacing: 3
-                            )
+                            fontWeight: FontWeight.bold,
+                            color: whiteColor,
+                            letterSpacing: 3)
                         : Theme.of(context).textTheme.titleMedium!.copyWith(
                             fontWeight: FontWeight.bold,
                             color: whiteColor,

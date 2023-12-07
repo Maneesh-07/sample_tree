@@ -110,7 +110,7 @@ class PaymentContainerWidget extends StatelessWidget {
               : MediaQuery.sizeOf(context).width * 0.23,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: bgColor.withOpacity(0.3),
+            color: bgColor.withOpacity(0.2),
             boxShadow: [
               BoxShadow(
                 color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),

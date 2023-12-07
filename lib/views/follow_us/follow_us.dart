@@ -52,10 +52,10 @@ class FollowGridView extends StatelessWidget {
   ];
 
   static const List<String> imageItem = [
-    '',
-    '',
-    '',
-    '',
+    'assets/instagram.png',
+    'assets/facebook.png',
+    'assets/x.png',
+    'assets/linkedln.png',
   ];
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class FollowGridView extends StatelessWidget {
               ContainerFollowWidget(
             text1: contentNames[index],
             text2: '',
-            imgUrl: '',
+            imgUrl: imageItem[index],
             onTap: () {},
           ),
         ),
@@ -110,7 +110,7 @@ class ContainerFollowWidget extends StatelessWidget {
               : MediaQuery.sizeOf(context).width * 0.23,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: bgColor,
+            color: bgColor.withOpacity(0.2),
             boxShadow: [
               BoxShadow(
                 color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
@@ -128,9 +128,17 @@ class ContainerFollowWidget extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.blue.shade50,
-                    radius: 20,
+                  child: ClipOval(
+                    child: CircleAvatar(
+                      backgroundColor: Colors.blue.shade50,
+                      radius: 25,
+                      child: Responsive.isMobile(context)
+                          ? Image.asset(
+                              imgUrl,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(imgUrl),
+                    ),
                   ),
                 ),
                 const SizedBox(
