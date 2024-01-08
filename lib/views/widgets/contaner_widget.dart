@@ -23,80 +23,95 @@ class ContainerWidget extends StatelessWidget {
     Colors.redAccent,
     Colors.pink.shade500,
     Colors.blue,
+    Colors.green,
+    Colors.teal
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          height: MediaQuery.of(context).size.height / 2,
-          width: Responsive.isMobile(context)
-              ? MediaQuery.of(context).size.width
-              : MediaQuery.sizeOf(context).width * 0.23,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: bgColor.withOpacity(0.2),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: ClipOval(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.blue.shade50,
-                      radius: 25,
-                      child: Responsive.isMobile(context)
-                          ? Image.asset(imgUrl)
-                          : Image.network(imgUrl),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Text(
-                    text1,
-                    style: Responsive.isDesktop(context)
-                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: whiteColor,
-                            letterSpacing: 3)
-                        : Theme.of(context).textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: whiteColor,
-                            letterSpacing: 2),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: AnimatedLinearProgressIndicator(
-                    label: text2,
-                    color: colors[index],
-                  ),
-                ),
-              ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: MediaQuery.sizeOf(context).height * defaultPadding,
+        width: Responsive.isMobile(context)
+            ? MediaQuery.of(context).size.width
+            : MediaQuery.sizeOf(context).width * 0.23,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: bgColor,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(0, 4),
             ),
-          ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 10),
+              child: ClipRRect(
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  radius: Responsive.isMobile(context)
+                      ? MediaQuery.of(context).size.width / defaultPadding
+                      : MediaQuery.sizeOf(context).width / defaultPadding - 10,
+                  child: Responsive.isMobile(context)
+                      ? Image.asset(imgUrl)
+                      : Image.network(imgUrl),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                text1,
+                style: Responsive.isDesktop(context)
+                    ? Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: whiteColor, letterSpacing: 3)
+                    : Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: whiteColor, letterSpacing: 1),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                text2,
+                style: Responsive.isDesktop(context)
+                    ? Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: whiteColor)
+                    : Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: whiteColor.withOpacity(0.4),
+                          fontSize: 12,
+                        ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: AnimatedLinearProgressIndicator(
+                color: colors[index],
+              ),
+            ),
+          ],
         ),
       ),
     );

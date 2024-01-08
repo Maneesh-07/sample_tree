@@ -18,41 +18,49 @@ class ProjectsGridView extends StatelessWidget {
     'payments',
     'Instagram',
     'facebook',
+    'Suggestion',
+    'Contact Us',
   ];
   static const List<String> text2 = [
     'Please Review us',
     'UPI & payment Link',
     'Please Follow us',
     'Please Follow Us',
+    'Give a suggestion',
+    'Contact Us',
   ];
   static const List<String> imageContent = [
     'assets/review.jpg',
     'assets/payment.png',
     'assets/instagram.png',
     'assets/facebook.png',
+    'assets/idea.png',
+    'assets/contact-us.png',
   ];
-
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        child: GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            childAspectRatio: childAspectRatio,
-            crossAxisSpacing: defaultPadding * 0.1,
-            mainAxisSpacing: defaultPadding,
-          ),
-          itemCount: 4,
-          itemBuilder: (BuildContext context, int index) => ContainerWidget(
-            text1: contentNames[index],
-            text2: text2[index],
-            imgUrl: imageContent[index],
-            onTap: () => _navigateToNextPage(context, index),
-            index: index,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 5, 25, 5),
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio * 0.9,
+              crossAxisSpacing: defaultPadding,
+              mainAxisSpacing: defaultPadding,
+            ),
+            itemCount: contentNames.length,
+            itemBuilder: (BuildContext context, int index) => ContainerWidget(
+              text1: contentNames[index],
+              text2: text2[index],
+              imgUrl: imageContent[index],
+              onTap: () => _navigateToNextPage(context, index),
+              index: index,
+            ),
           ),
         ),
       ),

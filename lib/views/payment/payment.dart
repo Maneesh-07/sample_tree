@@ -63,21 +63,24 @@ class PaymentsGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        child: GridView.builder(
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            childAspectRatio: childAspectRatio,
-            crossAxisSpacing: defaultPadding / 3,
-            mainAxisSpacing: defaultPadding,
-          ),
-          itemCount: 4,
-          itemBuilder: (BuildContext context, int index) =>
-              PaymentContainerWidget(
-            text1: contentNames[index],
-            imgUrl: imagesItems[index],
-            onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+          child: GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio * 0.9,
+              crossAxisSpacing: defaultPadding,
+              mainAxisSpacing: defaultPadding,
+            ),
+            itemCount: 4,
+            itemBuilder: (BuildContext context, int index) =>
+                PaymentContainerWidget(
+              text1: contentNames[index],
+              imgUrl: imagesItems[index],
+              onTap: () {},
+            ),
           ),
         ),
       ),
@@ -99,32 +102,31 @@ class PaymentContainerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          height: MediaQuery.of(context).size.height / 2,
-          width: Responsive.isMobile(context)
-              ? MediaQuery.of(context).size.width
-              : MediaQuery.sizeOf(context).width * 0.23,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: bgColor.withOpacity(0.2),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: MediaQuery.of(context).size.height / 2,
+        width: Responsive.isMobile(context)
+            ? MediaQuery.of(context).size.width
+            : MediaQuery.sizeOf(context).width * 0.23,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: bgColor,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 ClipOval(
                   child: CircleAvatar(
@@ -147,10 +149,14 @@ class PaymentContainerWidget extends StatelessWidget {
                 Text(
                   text1,
                   style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold, color: whiteColor)
-                      : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold, color: whiteColor),
+                      ? Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: whiteColor, letterSpacing: 1)
+                      : Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(color: whiteColor, letterSpacing: 1),
                 ),
               ],
             ),

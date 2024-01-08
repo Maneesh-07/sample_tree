@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/responsive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FiveStar extends StatelessWidget {
   const FiveStar({super.key});
@@ -69,21 +70,26 @@ class ReviewGridView extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                childAspectRatio: childAspectRatio,
-                crossAxisSpacing: defaultPadding / 5,
-                mainAxisSpacing: defaultPadding / 5,
-              ),
-              itemCount: contentNames.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  FiveStarContainer(
-                text1: contentNames[index],
-                imgUrl: imagesContent[index],
-                onTap: () {},
+            Padding(
+              padding: const EdgeInsets.fromLTRB(70, 0, 70, 0),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  childAspectRatio: childAspectRatio / 1.5,
+                  crossAxisSpacing: defaultPadding - 8,
+                  mainAxisSpacing: defaultPadding - 8,
+                ),
+                itemCount: contentNames.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    FiveStarContainer(
+                  text1: contentNames[index],
+                  imgUrl: imagesContent[index],
+                  onTap: () {
+                    _navigateToNextPage(context, index);
+                  },
+                ),
               ),
             ),
             const SizedBox(
@@ -92,15 +98,15 @@ class ReviewGridView extends StatelessWidget {
             TextButton(
                 onPressed: () {},
                 style: TextButton.styleFrom(
-                  fixedSize: const Size(70, 0),
+                  fixedSize: const Size(120, 40),
                   foregroundColor: whiteColor,
-                  backgroundColor: kButtonColorBlue,
+                  backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 5,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: const Text('Submit'))
@@ -108,6 +114,32 @@ class ReviewGridView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw "Can not Lunch url";
+    }
+  }
+
+  void _navigateToNextPage(BuildContext context, int index) {
+    // TabController tabController = DefaultTabController.of(context);
+
+    if (contentNames[index] == 'Google') {
+      _launchUrl(
+          'https://www.google.com/search?gs_ssp=eJzj4tVP1zc0zM2ILyqvLMo1YLRSNagwTjIwTbJMSjSwTDM0TDMwtTKoMDdMSbRMTE5LTjYwNzA2tPBiT8_JT8pMqwQAWCMS6A&q=globify&rlz=1C1UEAD_enIN1078IN1078&oq=glo&gs_lcrp=EgZjaHJvbWUqFQgBEC4YJxivARjHARiABBiKBRiOBTIGCAAQRRg5MhUIARAuGCcYrwEYxwEYgAQYigUYjgUyBggCEEUYPTIGCAMQRRhBMgYIBBBFGEEyBggFEEUYQTIGCAYQRRg9MgYIBxBFGD3SAQg0NjYzajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#ip=1&lrd=0x3b05b9ba09f11f05:0x71da9acfcc070318,1,,,,');
+    } else if (contentNames[index] == 'facebook') {
+      _launchUrl('https://www.facebook.com/Devastanam');
+    } else if (contentNames[index] == 'Twitter') {
+      _launchUrl('');
+    } else if (contentNames[index] == 'Linkedln') {
+      _launchUrl(
+          'https://www.linkedin.com/company/globify-software-solutions-pvt-ltd/');
+    }
   }
 }
 
@@ -125,54 +157,72 @@ class FiveStarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: Responsive.isMobile(context)
-              ? MediaQuery.of(context).size.width
-              : MediaQuery.sizeOf(context).width * 0.23,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: bgColor.withOpacity(0.190),
-            image: DecorationImage(
-              image: AssetImage(imgUrl),
-              scale: 13,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: Responsive.isMobile(context)
+            ? MediaQuery.of(context).size.width
+            : MediaQuery.sizeOf(context).width * 0.23,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(20),
+          color: bgColor,
+          // image: DecorationImage(
+          //   image: AssetImage(imgUrl,),
+          //   scale: 10,
+          // ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(0, 4),
             ),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 4),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            ClipOval(
+              child: Image.asset(
+                imgUrl,
+                height: 55,
               ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Text(
-                  text1,
-                  style: Responsive.isDesktop(context)
-                      ? Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.bold, color: whiteColor)
-                      : Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontWeight: FontWeight.bold, color: whiteColor),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-            ],
-          ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    text1,
+                    style: Responsive.isDesktop(context)
+                        ? Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .copyWith(color: whiteColor)
+                        : Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: whiteColor),
+                  ),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
