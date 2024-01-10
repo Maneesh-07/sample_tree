@@ -193,124 +193,115 @@ class ContainerFollowWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: ClipRRect(
-                    child: CircleAvatar(
-                      radius: 25,
-                      child: Responsive.isMobile(context)
-                          ? CachedNetworkImage(
-                              color: bgColor,
-                              imageUrl: details.icon,
-                              imageBuilder: (context, imageProvider) => Padding(
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: double.maxFinite,
-                                        decoration: BoxDecoration(
-                                            color: bgColor,
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.fill)),
-                                      ),
-                                    ),
-                                  ),
-                              progressIndicatorBuilder: (context, url,
-                                      downloadProgress) =>
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: double.maxFinite,
-                                        decoration: const BoxDecoration(
-                                          color: whiteColor,
-                                        ),
-                                        child:
-                                            const CupertinoActivityIndicator(),
-                                      ),
-                                    ),
-                                  ),
-                              errorWidget: (context, url, error) => Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 0, right: 0, bottom: 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: double.maxFinite,
-                                        decoration: const BoxDecoration(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: CircleAvatar(
+                    radius: 25,
+                    child: Responsive.isMobile(context)
+                        ? CachedNetworkImage(
+                            color: bgColor,
+                            imageUrl: details.icon,
+                            fit: BoxFit.fill,
+                            imageBuilder: (context, imageProvider) => Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
                                           color: bgColor,
-                                        ),
-                                        child: Icon(
-                                          Icons.error,
-                                          color: whiteColor.withOpacity(0.9),
-                                        ),
-                                      ),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill)),
                                     ),
-                                  ))
-                          : CachedNetworkImage(
-                              color: bgColor,
-                              imageUrl: details.icon,
-                              imageBuilder: (context, imageProvider) => Padding(
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: double.maxFinite,
-                                        decoration: BoxDecoration(
-                                            color: bgColor,
-                                            image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.fill)),
+                                  ),
+                                ),
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: whiteColor,
+                                      ),
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, right: 0, bottom: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: bgColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.error,
+                                        color: whiteColor.withOpacity(0.9),
                                       ),
                                     ),
                                   ),
-                              progressIndicatorBuilder: (context, url,
-                                      downloadProgress) =>
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: double.maxFinite,
-                                        decoration: const BoxDecoration(
-                                          color: whiteColor,
-                                        ),
-                                        child:
-                                            const CupertinoActivityIndicator(),
-                                      ),
-                                    ),
-                                  ),
-                              errorWidget: (context, url, error) => Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 0, right: 0, bottom: 0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: double.maxFinite,
-                                        decoration: const BoxDecoration(
+                                ))
+                        : CachedNetworkImage(
+                            color: bgColor,
+                            imageUrl: details.icon,
+                            imageBuilder: (context, imageProvider) => Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
                                           color: bgColor,
-                                        ),
-                                        child: Icon(
-                                          Icons.error,
-                                          color: whiteColor.withOpacity(0.9),
-                                        ),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                ),
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: whiteColor,
+                                      ),
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, right: 0, bottom: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: bgColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.error,
+                                        color: whiteColor.withOpacity(0.9),
                                       ),
                                     ),
-                                  )),
-                    ),
+                                  ),
+                                )),
                   ),
                 ),
                 const SizedBox(

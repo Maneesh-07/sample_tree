@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
+import 'package:sample_tree/views/home/home_dash.dart';
 import 'dart:js' as js;
 
 import 'package:sample_tree/views/home/home_screen.dart';
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
                   const TextStyle(color: bodyTextColor, fontFamily: 'arial'),
             ),
       ),
-      home: const HomeScreen(),
+      home: const DashBoard(),
     );
   }
 }

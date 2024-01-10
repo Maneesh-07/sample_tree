@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/model/fetch_companies.dart';
 import 'package:sample_tree/responsive.dart';
@@ -10,14 +11,14 @@ import 'package:sample_tree/views/payment/payment.dart';
 import 'package:sample_tree/views/review/review_us.dart';
 import 'package:sample_tree/views/widgets/myproject.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class CategoryCard extends StatefulWidget {
+  const CategoryCard({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<CategoryCard> createState() => _CategoryCardState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CategoryCardState extends State<CategoryCard> {
   late ApiServicesForCompaniesDetails apiServicesForCompaniesDetails;
   int selectedTabIndex = 0;
   @override
@@ -28,44 +29,112 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: SafeArea(
-        child: Scaffold(
-            body: FutureBuilder<List<FetchCompanies>>(
-                future: apiServicesForCompaniesDetails.fetchCompanies(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Text("No Products Available");
-                  }
+    return SizedBox(
+      height: mHeight!,
+      child: Stack(
+        children: [
+          Container(
+            height: mHeight!,
+            decoration: const BoxDecoration(
+              gradient: scaffoldGradient,
+            ),
+          ),
+          Positioned(
+              top: 0,
+              left: mWidth! / 65,
+              right: mHeight! / 65,
+              bottom: 0,
+              // child: Container(
+              //   height: mHeight! / 5.2,
+              //   width: mWidth! / 1.07,
+              //   decoration: BoxDecoration(
+              //       color: scaffoldBgColor,
+              //       borderRadius: BorderRadius.circular(20),
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Colors.grey.withOpacity(0.5),
+              //           spreadRadius: 2,
+              //           blurRadius: 5,
+              //           offset: const Offset(3, 4),
+              //         ),
+              //       ]),
+              child: FutureBuilder<List<FetchCompanies>>(
+                  future: apiServicesForCompaniesDetails.fetchCompanies(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Text("No Products Available");
+                    }
 
-                  final details = snapshot.data;
+                    final details = snapshot.data;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (!Responsive.isMobileLarge(context))
-                        const SizedBox(
-                          height: defaultPadding / 2,
-                        ),
-                      _buildCustomAppBar(context, details),
-                      // const SizedBox(
-                      //   height: defaultPadding,
-                      // ),
-                      // Responsive.isDesktop(context)
-                      //     ? _buildCustomAppBar(context)
-                      //     : _buildCustomAppBar(context),
-                      if (!Responsive.isMobile(context))
-                        _buildTabBarView(context),
-                      if (Responsive.isMobile(context))
-                        _buildTabBarView(context)
-                    ],
-                  );
-                })),
+                    return Column(
+                      children: [
+                        // SizedBox(
+                        //   height: mHeight! / 7.7,
+                        //   child: GridView.builder(
+                        //     gridDelegate:
+                        //         const SliverGridDelegateWithFixedCrossAxisCount(
+                        //       crossAxisCount: 1,
+                        //       crossAxisSpacing: 1,
+                        //       mainAxisSpacing: 0,
+                        //     ),
+                        //     shrinkWrap: true,
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemCount: 4,
+                        //     itemBuilder: (BuildContext context, int index) {
+                        //       return const SizedBox.shrink();
+                        //     },
+                        //   ),
+                        // ),
+
+                        if (Responsive.isMobile(context) ||
+                            Responsive.isMobileLarge(context) ||
+                            Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context))
+                          // const SizedBox(
+                          //   height: defaultPadding / 2,
+                          // ),
+                          _buildCustomAppBar(context, details),
+
+                        // const SizedBox(
+                        //   height: defaultPadding,
+                        // ),
+                        // Responsive.isDesktop(context)
+                        //     ? _buildCustomAppBar(context)
+                        //     : _buildCustomAppBar(context),
+                        if (!Responsive.isMobile(context))
+                          _buildTabBarView(context),
+                        if (Responsive.isMobile(context))
+                          _buildTabBarView(context)
+
+                        // Container(
+                        //   height: mHeight! / 22,
+                        //   width: mWidth! / 1.2,
+                        //   decoration: BoxDecoration(
+                        //     color: whiteColor,
+                        //     borderRadius: BorderRadius.circular(14),
+                        //   ),
+                        //   child: const Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       children: [
+                        //         Text(
+                        //           'All categories',
+                        //           style: TextStyle(
+                        //             color: bgColor,
+                        //             fontSize: 16,
+                        //             fontWeight: FontWeight.w500,
+                        //           ),
+                        //         )
+                        //       ]),
+                        // )
+                      ],
+                    );
+                  })),
+        ],
       ),
     );
   }
@@ -98,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(13.0),
+          padding: const EdgeInsets.only(left: 10),
           child: Column(
             children: [
               Row(
@@ -112,13 +181,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           ClipOval(
                             child: CircleAvatar(
                               backgroundColor: Colors.transparent,
-                              radius: 10,
-                              child: Image.asset('assets/gif.gif'),
+                              radius: 20,
+                              child: Responsive.isMobile(context)
+                                  ? Image.asset('assets/Animation3.gif')
+                                  : Image.network('assets/Animation3.gif'),
                             ),
                           ),
                           SizedBox(
                             width: Responsive.isMobile(context)
-                                ? MediaQuery.sizeOf(context).width / 1.6
+                                ? MediaQuery.sizeOf(context).width / 1.9
                                 : MediaQuery.sizeOf(context).width / 1.5,
                           ),
                           CircleAvatar(

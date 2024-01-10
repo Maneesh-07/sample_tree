@@ -18,3 +18,15 @@ const maxWidth = 1339.0; // max width of our web
 const kHeight = SizedBox(
   height: 20,
 );
+
+var mHeight;
+var mWidth;
+
+
+const scaffoldGradient = LinearGradient(
+  colors: [scaffoldBgColor, scaffoldBgColor],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
+  stops: [0.0, 10.0],
+  tileMode: TileMode.clamp,
+);

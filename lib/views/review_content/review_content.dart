@@ -99,7 +99,7 @@ class _ReviewContentState extends State<ReviewContent> {
               TextButton(
                 onPressed: () async {
                   try {
-                    // Send the product data to the backend
+                  
                     await reviewPostMethod.postReviewContent(
                       namecontroller.text,
                       phoneController.text,
@@ -110,7 +110,7 @@ class _ReviewContentState extends State<ReviewContent> {
 
                     showToast('Review successfully Updated');
                   } catch (e) {
-                    print('Error booking product: $e');
+                    print('Error Posting details: $e');
                   }
                 },
                 style: TextButton.styleFrom(
