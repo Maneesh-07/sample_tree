@@ -18,7 +18,7 @@ class ProjectsGridView extends StatefulWidget {
 
   static const List<String> contentNames = [
     'Reviews',
-    'payments',
+    'Payments',
     'Instagram',
     'facebook',
     'Suggestion',
@@ -48,7 +48,8 @@ class ProjectsGridView extends StatefulWidget {
 class _ProjectsGridViewState extends State<ProjectsGridView> {
   late ApiServicesSuggestionDetails apiServicesSuggestionDetails;
 
-  late List<GetSuggestion>? details;
+  // late List<GetSuggestion>? details;
+  int selectedIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -72,7 +73,8 @@ class _ProjectsGridViewState extends State<ProjectsGridView> {
                     return const Text("No Products Available");
                   }
 
-                   details = snapshot.data;
+                  final details = snapshot.data;
+                  selectedIndex = details!.length;
                   return GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -89,8 +91,7 @@ class _ProjectsGridViewState extends State<ProjectsGridView> {
                           text2: ProjectsGridView.text2[index],
                           imgUrl: ProjectsGridView.imageContent[index],
                           onTap: () {
-                            _navigateToNextPage(context, index);
-                           
+                            _navigateToNextPage(context, index, details);
                           },
                           index: index,
                         );
@@ -100,22 +101,29 @@ class _ProjectsGridViewState extends State<ProjectsGridView> {
     );
   }
 
-  void _navigateToNextPage(BuildContext context, int index) {
+  void _navigateToNextPage(
+      BuildContext context, int index, List<GetSuggestion>? selectedIndex) {
     TabController tabController = DefaultTabController.of(context);
 
     if (ProjectsGridView.contentNames[index] == 'Reviews') {
       tabController.animateTo(2);
-    } else if (ProjectsGridView.contentNames[index] == 'payments') {
+    } else if (ProjectsGridView.contentNames[index] == 'Payments') {
       tabController.animateTo(1);
     } else if (ProjectsGridView.contentNames[index] == 'Instagram') {
       tabController.animateTo(3);
     } else if (ProjectsGridView.contentNames[index] == 'facebook') {
       tabController.animateTo(3);
-    } else if(ProjectsGridView.contentNames[index] == 'Suggestion'){
-      launchEmail(details![0].data);
+    } else if (ProjectsGridView.contentNames[index] == 'Suggestion') {
+      print(selectedIndex![0].email);
+      launchEmail(selectedIndex[0].email);
+    } else if (ProjectsGridView.contentNames[index] == 'Contact Us') {
+      print(selectedIndex![0].name);
+      print(selectedIndex[0].phone);
+      addContact(selectedIndex[0].name, selectedIndex[0].phone);
     }
   }
-   Future<void> launchEmail(String email) async {
+
+  Future<void> launchEmail(String email) async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: email,
@@ -126,6 +134,15 @@ class _ProjectsGridViewState extends State<ProjectsGridView> {
       await canLaunchUrl(emailLaunchUri);
     } else {
       throw 'Could not launch email';
+    }
+  }
+
+  Future<void> addContact(String name, String phone) async {
+    final Uri url = Uri(scheme: 'tel', path: phone);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw ('can not lunch phone');
     }
   }
 }

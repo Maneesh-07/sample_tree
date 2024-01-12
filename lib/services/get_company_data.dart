@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:sample_tree/config/api_config.dart';
 import 'package:sample_tree/main.dart';
@@ -44,7 +44,13 @@ class ApiServicesForCompaniesDetails {
             'Failed to fetch data. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to get data $e');
+      Align(
+        alignment: Alignment.center,
+        child: Center(
+        child: throw Exception('Failed to get data $e'),
+      
+        ),
+      );
     }
   }
 }

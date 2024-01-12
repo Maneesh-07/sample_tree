@@ -49,7 +49,7 @@ class PaymentsGridView extends StatelessWidget {
   static const List<String> contentNames = [
     'RazorPay',
     'GooglePay',
-    'PhonePay',
+    'PhonePe',
     'Paypal',
   ];
 

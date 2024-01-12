@@ -181,10 +181,10 @@ class _CategoryCardState extends State<CategoryCard> {
                           ClipOval(
                             child: CircleAvatar(
                               backgroundColor: Colors.transparent,
-                              radius: 20,
+                              radius: 10,
                               child: Responsive.isMobile(context)
-                                  ? Image.asset('assets/Animation3.gif')
-                                  : Image.network('assets/Animation3.gif'),
+                                  ? Image.asset('assets/Animation_2.gif')
+                                  : Image.network('assets/Animation_2.gif'),
                             ),
                           ),
                           SizedBox(

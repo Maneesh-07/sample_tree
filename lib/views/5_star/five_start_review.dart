@@ -95,21 +95,6 @@ class ReviewGridView extends StatelessWidget {
             const SizedBox(
               height: defaultPadding,
             ),
-            TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  fixedSize: const Size(120, 40),
-                  foregroundColor: whiteColor,
-                  backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text('Submit'))
           ],
         ),
       ),

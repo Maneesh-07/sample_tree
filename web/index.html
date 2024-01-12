@@ -20,6 +20,18 @@
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Android meta tags -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Android icons -->
+  <link rel="icon" sizes="192x192" href="icons/Icon-192.png">
+  <link rel="icon" sizes="512x512" href="icons/Icon-512.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/Icon-192.png">
+  <link rel="mask-icon" href="icons/Icon-192.png" color="#000000">
+
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -58,7 +70,6 @@
   <script>
 
     window.addEventListener('load', function (ev) {
-
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
@@ -70,7 +81,7 @@
           });
         }
       });
-    });
+    },100);
 
   </script>
 </body>
