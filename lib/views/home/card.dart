@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/model/fetch_companies.dart';
 import 'package:sample_tree/responsive.dart';
@@ -182,9 +181,9 @@ class _CategoryCardState extends State<CategoryCard> {
                             child: CircleAvatar(
                               backgroundColor: Colors.transparent,
                               radius: 10,
-                              child: Responsive.isMobile(context)
-                                  ? Image.asset('assets/Animation_2.gif')
-                                  : Image.network('assets/Animation_2.gif'),
+                              // child: Responsive.isMobile(context)
+                              //     ? Image.asset('assets/Animation_2.gif')
+                              //     : Image.network('assets/Animation_2.gif'),
                             ),
                           ),
                           SizedBox(

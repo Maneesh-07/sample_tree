@@ -5,6 +5,7 @@ import 'package:sample_tree/config/api_config.dart';
 import 'package:sample_tree/main.dart';
 import 'package:sample_tree/model/suggestion_model.dart';
 
+
 class ApiServicesSuggestionDetails {
  Future<List<GetSuggestion>> fetchSuggestion() async {
   const String apiKey = 'df504a1a-1490-4029-ad7f-b1b72695099f';

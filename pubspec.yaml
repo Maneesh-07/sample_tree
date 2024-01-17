@@ -47,6 +47,13 @@ dependencies:
   shared_preferences: ^2.2.2
   cached_network_image: ^3.3.1
   lottie: ^2.7.0
+  contacts_service: ^0.6.3
+
+
+
+
+
+
   
 
 
