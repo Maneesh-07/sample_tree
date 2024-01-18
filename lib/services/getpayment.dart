@@ -4,12 +4,12 @@ import 'package:sample_tree/main.dart';
 import 'package:sample_tree/model/get_user_id_model.dart';
 import 'package:http/http.dart' as http;
 
-class ApiServicesForLinkLabel {
-
+class ApiServicesForPaymentLinkLabel {
+  
   Future<List<GetCompaniesLink>> fetchDetails() async {
+  const String apiKey = 'df504a1a-1490-4029-ad7f-b1b72695099f';
 
-    const String apiKey = 'df504a1a-1490-4029-ad7f-b1b72695099f';
-    try {
+  try {
     final response = await http.get(
       Uri.parse("${Config.apiUrl}get-link-label?uid=$uid"),
       headers: {
@@ -25,7 +25,7 @@ class ApiServicesForLinkLabel {
         List<GetCompaniesLink> users = responseData
             .map((json) =>
                 GetCompaniesLink.fromJson(json as Map<String, dynamic>))
-            .where((user) => user.categoryLabelId == 1) // Filter by category_label_id
+            .where((user) => user.categoryLabelId == 2) 
             .toList();
         return users;
       } else if (responseData is Map<String, dynamic> &&
@@ -33,7 +33,7 @@ class ApiServicesForLinkLabel {
         final List<GetCompaniesLink> users = List<GetCompaniesLink>.from(
           responseData['data']
               .map((json) => GetCompaniesLink.fromJson(json))
-              .where((user) => user.categoryLabelId == 1), // Filter by category_label_id
+              .where((user) => user.categoryLabelId == 2), 
         );
         return users;
       } else {
@@ -49,5 +49,6 @@ class ApiServicesForLinkLabel {
   } catch (e) {
     throw Exception('Failed to get data $e');
   }
-  }
+}
+
 }

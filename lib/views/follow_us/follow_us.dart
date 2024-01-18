@@ -82,7 +82,7 @@ class _FollowGridViewState extends State<FollowGridView> {
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-          child: FutureBuilder<List<GetCompanies>>(
+          child: FutureBuilder<List<GetCompaniesLink>>(
               future: apiServicesForCompaniesDetails.fetchDetails(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -148,7 +148,7 @@ class _FollowGridViewState extends State<FollowGridView> {
 }
 
 class ContainerFollowWidget extends StatelessWidget {
-  final GetCompanies details;
+  final GetCompaniesLink details;
   final String? text2;
   final String? imgUrl;
   final VoidCallback? onTap;

@@ -1,6 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
+import 'package:sample_tree/model/get_user_id_model.dart';
 import 'package:sample_tree/responsive.dart';
+import 'package:sample_tree/services/getpayment.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
@@ -35,7 +40,7 @@ class PaymentScreen extends StatelessWidget {
   }
 }
 
-class PaymentsGridView extends StatelessWidget {
+class PaymentsGridView extends StatefulWidget {
   final TabController? tabController;
   const PaymentsGridView({
     super.key,
@@ -59,51 +64,112 @@ class PaymentsGridView extends StatelessWidget {
     'assets/phonepe.png',
     'assets/paypal.png',
   ];
+
+  @override
+  State<PaymentsGridView> createState() => _PaymentsGridViewState();
+}
+
+class _PaymentsGridViewState extends State<PaymentsGridView> {
+ late ApiServicesForPaymentLinkLabel apiServicesForCompaniesDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    apiServicesForCompaniesDetails = ApiServicesForPaymentLinkLabel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-          child: GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              childAspectRatio: childAspectRatio * 0.9,
-              crossAxisSpacing: defaultPadding,
-              mainAxisSpacing: defaultPadding,
-            ),
-            itemCount: 4,
-            itemBuilder: (BuildContext context, int index) =>
-                PaymentContainerWidget(
-              text1: contentNames[index],
-              imgUrl: imagesItems[index],
-              onTap: () {},
-            ),
-          ),
+          child: FutureBuilder<List<GetCompaniesLink>>(
+              future: apiServicesForCompaniesDetails.fetchDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No Products Available");
+                }
+
+                final details = snapshot.data;
+
+                return GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: widget.crossAxisCount,
+                    childAspectRatio: widget.childAspectRatio * 0.9,
+                    crossAxisSpacing: defaultPadding,
+                    mainAxisSpacing: defaultPadding,
+                  ),
+                  itemCount: details!.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      ContainerFollowWidget(
+                    details: details[index],
+                    text2: '',
+                    index: index,
+                    onTap: () {
+                      // _navigateToNextPage(context, index);
+                    },
+                  ),
+                );
+              }),
         ),
       ),
     );
   }
+
+  // Future<void> _launchUrl(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (!await launchUrl(
+  //     uri,
+  //     mode: LaunchMode.externalApplication,
+  //   )) {
+  //     throw "Can not Lunch url";
+  //   }
+  // }
+
+  // void _navigateToNextPage(BuildContext context, int index) {
+  //   // TabController tabController = DefaultTabController.of(context);
+
+  //   if (FollowGridView.contentNames[index] == 'Instagram') {
+  //     _launchUrl('https://www.instagram.com/globify_digital_solutions');
+  //   } else if (FollowGridView.contentNames[index] == 'facebook') {
+  //     _launchUrl('https://www.facebook.com/globifydigital');
+  //   } else if (FollowGridView.contentNames[index] == 'Twitter') {
+  //     _launchUrl('');
+  //   } else if (FollowGridView.contentNames[index] == 'Linkedln') {
+  //     _launchUrl(
+  //         'https://www.linkedin.com/company/globify-software-solutions-pvt-ltd/');
+  //   }
+  // }
 }
 
-class PaymentContainerWidget extends StatelessWidget {
-  final String text1;
-
-  final String imgUrl;
-  final VoidCallback onTap;
-  const PaymentContainerWidget({
+class ContainerFollowWidget extends StatelessWidget {
+  final GetCompaniesLink details;
+  final String? text2;
+  final String? imgUrl;
+  final VoidCallback? onTap;
+  final int index;
+  const ContainerFollowWidget({
     super.key,
-    required this.text1,
-    required this.imgUrl,
-    required this.onTap,
+    required this.details,
+    this.text2,
+    this.imgUrl,
+    required this.index,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        _navigateToNextPage(context, index);
+      },
       child: Container(
         height: MediaQuery.of(context).size.height / 2,
         width: Responsive.isMobile(context)
@@ -128,34 +194,131 @@ class PaymentContainerWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ClipOval(
+                Padding(
+                  padding: const EdgeInsets.only(left: 0),
                   child: CircleAvatar(
-                    backgroundColor: whiteColor,
                     radius: 25,
                     child: Responsive.isMobile(context)
-                        ? Image.asset(
-                            imgUrl,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.network(
-                            imgUrl,
+                        ? CachedNetworkImage(
+                            color: bgColor,
+                            imageUrl: details.icon,
                             fit: BoxFit.fill,
-                          ),
+                            imageBuilder: (context, imageProvider) => Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                          color: bgColor,
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                ),
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: whiteColor,
+                                      ),
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, right: 0, bottom: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: bgColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.error,
+                                        color: whiteColor.withOpacity(0.9),
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                        : CachedNetworkImage(
+                            color: bgColor,
+                            imageUrl: details.icon,
+                            imageBuilder: (context, imageProvider) => Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                          color: bgColor,
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                ),
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: whiteColor,
+                                      ),
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, right: 0, bottom: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: bgColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.error,
+                                        color: whiteColor.withOpacity(0.9),
+                                      ),
+                                    ),
+                                  ),
+                                )),
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 Text(
-                  text1,
+                  details.label,
                   style: Responsive.isDesktop(context)
-                      ? Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: whiteColor, letterSpacing: 1)
+                      ? Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: whiteColor,
+                            letterSpacing: 1,
+                          )
                       : Theme.of(context)
                           .textTheme
-                          .bodyLarge!
+                          .titleMedium!
                           .copyWith(color: whiteColor, letterSpacing: 1),
                 ),
               ],
@@ -164,5 +327,44 @@ class PaymentContainerWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _navigateToNextPage(BuildContext context, int index) {
+    final link = details.socialLinks.isNotEmpty ? details.socialLinks[0] : null;
+
+    if (details.label == 'G-Pay' && link != null) {
+      print(link.url);
+      _launchUrl(link.url);
+    } else if (details.label == 'Instagram' && link != null) {
+      _launchUrl(link.url);
+    } else if (details.label == 'Linkedin' && link != null) {
+      _launchUrl(link.url);
+    } else if (details.label == 'Gmail' && link != null) {
+      launchEmail(link.url);
+    }
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw "Can not Lunch url";
+    }
+  }
+
+  Future<void> launchEmail(String email) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: 'subject=Subject&body=Body',
+    );
+
+    if (await launchUrl(emailLaunchUri)) {
+      await canLaunchUrl(emailLaunchUri);
+    } else {
+      throw 'Could not launch email';
+    }
   }
 }

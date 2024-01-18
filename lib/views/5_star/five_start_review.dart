@@ -117,7 +117,7 @@ class ReviewGridView extends StatelessWidget {
     if (contentNames[index] == 'Google') {
       _launchUrl(
           'https://www.google.com/search?gs_ssp=eJzj4tVP1zc0zM2ILyqvLMo1YLRSNagwTjIwTbJMSjSwTDM0TDMwtTKoMDdMSbRMTE5LTjYwNzA2tPBiT8_JT8pMqwQAWCMS6A&q=globify&rlz=1C1UEAD_enIN1078IN1078&oq=glo&gs_lcrp=EgZjaHJvbWUqFQgBEC4YJxivARjHARiABBiKBRiOBTIGCAAQRRg5MhUIARAuGCcYrwEYxwEYgAQYigUYjgUyBggCEEUYPTIGCAMQRRhBMgYIBBBFGEEyBggFEEUYQTIGCAYQRRg9MgYIBxBFGD3SAQg0NjYzajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#ip=1&lrd=0x3b05b9ba09f11f05:0x71da9acfcc070318,1,,,,');
-    } else if (contentNames[index] == 'facebook') {
+    } else if (contentNames[index] == 'facebook') { 
       _launchUrl('https://www.facebook.com/Devastanam');
     } else if (contentNames[index] == 'Twitter') {
       _launchUrl('');
