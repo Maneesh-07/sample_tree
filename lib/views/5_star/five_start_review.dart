@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sample_tree/constant/constant.dart';
+import 'package:sample_tree/model/get_user_id_model.dart';
 import 'package:sample_tree/responsive.dart';
+import 'package:sample_tree/services/get_5star.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FiveStar extends StatelessWidget {
@@ -41,7 +45,7 @@ class FiveStar extends StatelessWidget {
   }
 }
 
-class ReviewGridView extends StatelessWidget {
+class ReviewGridView extends StatefulWidget {
   const ReviewGridView({
     super.key,
     this.crossAxisCount = 3,
@@ -65,40 +69,281 @@ class ReviewGridView extends StatelessWidget {
   ];
 
   @override
+  State<ReviewGridView> createState() => _ReviewGridViewState();
+}
+
+class _ReviewGridViewState extends State<ReviewGridView> {
+  late ApiServicesFor5StarLinkLabel apiServicesForCompaniesDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    apiServicesForCompaniesDetails = ApiServicesFor5StarLinkLabel();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(70, 0, 70, 0),
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  childAspectRatio: childAspectRatio / 1.5,
-                  crossAxisSpacing: defaultPadding - 8,
-                  mainAxisSpacing: defaultPadding - 8,
-                ),
-                itemCount: contentNames.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    FiveStarContainer(
-                  text1: contentNames[index],
-                  imgUrl: imagesContent[index],
-                  onTap: () {
-                    _navigateToNextPage(context, index);
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: defaultPadding,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+          child: FutureBuilder<List<GetCompaniesLink>>(
+              future: apiServicesForCompaniesDetails.fetchDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Text("No Products Available");
+                }
+
+                final details = snapshot.data;
+
+                return GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: widget.crossAxisCount,
+                    childAspectRatio: widget.childAspectRatio * 0.8,
+                    crossAxisSpacing: defaultPadding,
+                    mainAxisSpacing: defaultPadding,
+                  ),
+                  itemCount: details!.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      ContainerFollowWidget(
+                    details: details[index],
+                    text2: '',
+                    index: index,
+                    onTap: () {
+                      // _navigateToNextPage(context, index);
+                    },
+                  ),
+                );
+              }),
         ),
       ),
     );
+  }
+
+  // Future<void> _launchUrl(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (!await launchUrl(
+  //     uri,
+  //     mode: LaunchMode.externalApplication,
+  //   )) {
+  //     throw "Can not Lunch url";
+  //   }
+  // }
+
+  // void _navigateToNextPage(BuildContext context, int index) {
+  //   // TabController tabController = DefaultTabController.of(context);
+
+  //   if (FollowGridView.contentNames[index] == 'Instagram') {
+  //     _launchUrl('https://www.instagram.com/globify_digital_solutions');
+  //   } else if (FollowGridView.contentNames[index] == 'facebook') {
+  //     _launchUrl('https://www.facebook.com/globifydigital');
+  //   } else if (FollowGridView.contentNames[index] == 'Twitter') {
+  //     _launchUrl('');
+  //   } else if (FollowGridView.contentNames[index] == 'Linkedln') {
+  //     _launchUrl(
+  //         'https://www.linkedin.com/company/globify-software-solutions-pvt-ltd/');
+  //   }
+  // }
+}
+
+class ContainerFollowWidget extends StatelessWidget {
+  final GetCompaniesLink details;
+  final String? text2;
+  final String? imgUrl;
+  final VoidCallback? onTap;
+  final int index;
+  const ContainerFollowWidget({
+    super.key,
+    required this.details,
+    this.text2,
+    this.imgUrl,
+    required this.index,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _navigateToNextPage(context, index);
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height / 2,
+        width: Responsive.isMobile(context)
+            ? MediaQuery.of(context).size.width
+            : MediaQuery.sizeOf(context).width * 0.23,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: bgColor,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 0),
+                  child: CircleAvatar(
+                    radius: 25,
+                    child: Responsive.isMobile(context)
+                        ? CachedNetworkImage(
+                            color: bgColor,
+                            imageUrl: details.icon,
+                            fit: BoxFit.fill,
+                            imageBuilder: (context, imageProvider) => Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                          color: bgColor,
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                ),
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: whiteColor,
+                                      ),
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, right: 0, bottom: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: bgColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.error,
+                                        color: whiteColor.withOpacity(0.9),
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                        : CachedNetworkImage(
+                            color: bgColor,
+                            imageUrl: details.icon,
+                            imageBuilder: (context, imageProvider) => Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                          color: bgColor,
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.fill)),
+                                    ),
+                                  ),
+                                ),
+                            progressIndicatorBuilder: (context, url,
+                                    downloadProgress) =>
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: whiteColor,
+                                      ),
+                                      child: const CupertinoActivityIndicator(),
+                                    ),
+                                  ),
+                                ),
+                            errorWidget: (context, url, error) => Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0, right: 0, bottom: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: double.maxFinite,
+                                      decoration: const BoxDecoration(
+                                        color: bgColor,
+                                      ),
+                                      child: Icon(
+                                        Icons.error,
+                                        color: whiteColor.withOpacity(0.9),
+                                      ),
+                                    ),
+                                  ),
+                                )),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  details.label,
+                  style: Responsive.isDesktop(context)
+                      ? Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: whiteColor,
+                            letterSpacing: 1,
+                          )
+                      : Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: whiteColor, letterSpacing: 1),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToNextPage(BuildContext context, int index) {
+    final link = details.socialLinks.isNotEmpty ? details.socialLinks[0] : null;
+
+    if (details.label == 'Google' && link != null) {
+      _launchUrl(link.url);
+    } else if (details.label == '' && link != null) {
+      _launchUrl(link.url);
+    } else if (details.label == '' && link != null) {
+      _launchUrl(link.url);
+    } else if (details.label == '' && link != null) {
+      launchEmail(link.url);
+    }
   }
 
   Future<void> _launchUrl(String url) async {
@@ -111,105 +356,17 @@ class ReviewGridView extends StatelessWidget {
     }
   }
 
-  void _navigateToNextPage(BuildContext context, int index) {
-    // TabController tabController = DefaultTabController.of(context);
-
-    if (contentNames[index] == 'Google') {
-      _launchUrl(
-          'https://www.google.com/search?gs_ssp=eJzj4tVP1zc0zM2ILyqvLMo1YLRSNagwTjIwTbJMSjSwTDM0TDMwtTKoMDdMSbRMTE5LTjYwNzA2tPBiT8_JT8pMqwQAWCMS6A&q=globify&rlz=1C1UEAD_enIN1078IN1078&oq=glo&gs_lcrp=EgZjaHJvbWUqFQgBEC4YJxivARjHARiABBiKBRiOBTIGCAAQRRg5MhUIARAuGCcYrwEYxwEYgAQYigUYjgUyBggCEEUYPTIGCAMQRRhBMgYIBBBFGEEyBggFEEUYQTIGCAYQRRg9MgYIBxBFGD3SAQg0NjYzajBqN6gCALACAA&sourceid=chrome&ie=UTF-8#ip=1&lrd=0x3b05b9ba09f11f05:0x71da9acfcc070318,1,,,,');
-    } else if (contentNames[index] == 'facebook') { 
-      _launchUrl('https://www.facebook.com/Devastanam');
-    } else if (contentNames[index] == 'Twitter') {
-      _launchUrl('');
-    } else if (contentNames[index] == 'Linkedln') {
-      _launchUrl(
-          'https://www.linkedin.com/company/globify-software-solutions-pvt-ltd/');
-    }
-  }
-}
-
-class FiveStarContainer extends StatelessWidget {
-  final String text1;
-
-  final String imgUrl;
-  final VoidCallback onTap;
-  const FiveStarContainer({
-    super.key,
-    required this.text1,
-    required this.imgUrl,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: Responsive.isMobile(context)
-            ? MediaQuery.of(context).size.width
-            : MediaQuery.sizeOf(context).width * 0.23,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(20),
-          color: bgColor,
-          // image: DecorationImage(
-          //   image: AssetImage(imgUrl,),
-          //   scale: 10,
-          // ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(255, 47, 44, 44).withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 3,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 20,
-            ),
-            ClipOval(
-              child: Image.asset(
-                imgUrl,
-                height: 55,
-              ),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    text1,
-                    style: Responsive.isDesktop(context)
-                        ? Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: whiteColor)
-                        : Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: whiteColor),
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+  Future<void> launchEmail(String email) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: email,
+      query: 'subject=Subject&body=Body',
     );
+
+    if (await launchUrl(emailLaunchUri)) {
+      await canLaunchUrl(emailLaunchUri);
+    } else {
+      throw 'Could not launch email';
+    }
   }
 }

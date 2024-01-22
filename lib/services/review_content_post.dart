@@ -4,7 +4,7 @@ import 'package:sample_tree/config/api_config.dart';
 import 'package:sample_tree/main.dart';
 
 class ReviewPostMethod {
-  Future<void> postReviewContent(
+  Future<String> postReviewContent(
     String name,
     String phone,
     String email,
@@ -33,6 +33,7 @@ class ReviewPostMethod {
 
       if (response.statusCode == 200) {
         print('Content Added');
+        return 'success';
       } else {
         print('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to fetch data: ${response.statusCode}');

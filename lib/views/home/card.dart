@@ -29,7 +29,7 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: mHeight!,
+      height: MediaQuery.sizeOf(context).height,
       child: Stack(
         children: [
           Container(
@@ -181,9 +181,9 @@ class _CategoryCardState extends State<CategoryCard> {
                             child: CircleAvatar(
                               backgroundColor: Colors.transparent,
                               radius: 10,
-                              // child: Responsive.isMobile(context)
-                              //     ? Image.asset('assets/Animation_2.gif')
-                              //     : Image.network('assets/Animation_2.gif'),
+                              child: Responsive.isMobile(context)
+                                  ? Image.asset('assets/Animation_2.gif')
+                                  : Image.network('assets/Animation_2.gif'),
                             ),
                           ),
                           SizedBox(
@@ -191,19 +191,18 @@ class _CategoryCardState extends State<CategoryCard> {
                                 ? MediaQuery.sizeOf(context).width / 1.9
                                 : MediaQuery.sizeOf(context).width / 1.5,
                           ),
-                          CircleAvatar(
+                          ClipRRect(
                             child: SizedBox(
                               height: Responsive.isDesktop(context) &&
                                       Responsive.isMobile(context)
-                                  ? MediaQuery.of(context).size.height * 0.4
-                                  : MediaQuery.sizeOf(context).height * 0.06,
+                                  ? MediaQuery.of(context).size.height * 0.2
+                                  : MediaQuery.sizeOf(context).height * 0.0,
                               width: Responsive.isDesktop(context)
                                   ? MediaQuery.of(context).size.width * 0.1
-                                  : MediaQuery.sizeOf(context).width * 0.15,
+                                  : MediaQuery.sizeOf(context).width * 0.20,
                               child: CachedNetworkImage(
                                   color: bgColor,
-                                  imageUrl:
-                                      'https://admin.scanetapp.com/storage/app/public/${company.logo}',
+                                  imageUrl: 'assets/logo.png',
                                   fit: BoxFit.fitHeight,
                                   imageBuilder: (context, imageProvider) =>
                                       Padding(
@@ -406,7 +405,7 @@ class _CategoryCardState extends State<CategoryCard> {
         length: 4,
         child: Column(
           children: [
-            const SizedBox(height: 8),
+            // const SizedBox(height: 8),
             TabBar(
               tabs: [
                 Tab(
@@ -437,12 +436,14 @@ class _CategoryCardState extends State<CategoryCard> {
                   child: Text(
                     "Review us",
                     style: Responsive.isDesktop(context)
-                        ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        ? Theme.of(context).textTheme.bodySmall!.copyWith(
                               color: whiteColor,
+                              fontFamily: 'arial',
                             )
                         : Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: whiteColor,
-                            ),
+                            color: whiteColor,
+                            fontFamily: 'arial',
+                            fontSize: 11.9),
                   ),
                 ),
                 Tab(

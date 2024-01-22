@@ -116,7 +116,7 @@ class _RatingBarWidgetState extends State<RatingBarWidget> {
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.SNACKBAR,
-      timeInSecForIosWeb: 2000,
+      timeInSecForIosWeb: 2,
       backgroundColor: Colors.black.withOpacity(0.7),
       textColor: Colors.white,
       fontSize: 16.0,

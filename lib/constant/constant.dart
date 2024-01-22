@@ -9,7 +9,7 @@ const whiteColor = Colors.white;
 const kButtonColorBlue = Colors.blue;
 const scaffoldBgColor = Color(0xFF1A1C31);
 const colorGrey = Colors.grey;
-
+ const primaryColor2 = Colors.greenAccent;
 //color
 const defaultPadding = 20.0;
 const defaultDuration = Duration(seconds: 2); // we use it on our animation

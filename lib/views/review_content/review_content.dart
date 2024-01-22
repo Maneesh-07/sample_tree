@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/responsive.dart';
 import 'package:sample_tree/services/review_content_post.dart';
+import 'package:sample_tree/views/success/success_booked.dart';
 
 class ReviewContent extends StatefulWidget {
   final num star;
@@ -72,6 +73,12 @@ class _ReviewContentState extends State<ReviewContent> {
                 labelText: 'Name',
                 height: 55,
                 inputType: TextInputType.name,
+                validator: (value) {
+                  if (value == null || namecontroller.toString().isEmpty) {
+                    return 'Please enter your Name';
+                  }
+                  return null;
+                },
               ),
               kHeight,
               ReviewTextForm(
@@ -80,12 +87,21 @@ class _ReviewContentState extends State<ReviewContent> {
                 height: 70,
                 inputType: TextInputType.phone,
                 maxLine: 10,
+                validator: (value) {
+                  if (value == null || phoneController.toString().isEmpty) {
+                    return 'Please enter your mobile';
+                  } else if (value.length != 10) {
+                    return 'Enter a valid mobile.';
+                  }
+                  return null;
+                },
               ),
               kHeight,
               ReviewTextForm(
                 controller: emailController,
                 labelText: 'Email',
                 height: 55,
+                validator: validateEmail,
                 inputType: TextInputType.emailAddress,
               ),
               kHeight,
@@ -94,13 +110,18 @@ class _ReviewContentState extends State<ReviewContent> {
                 labelText: 'Message',
                 height: 110,
                 inputType: TextInputType.streetAddress,
+                validator: (value) {
+                  if (value == null || addressController.toString().isEmpty) {
+                    return 'Please enter your Message!';
+                  }
+                  return null;
+                },
               ),
               kHeight,
               TextButton(
                 onPressed: () async {
                   try {
-                  
-                    await reviewPostMethod.postReviewContent(
+                    final data = await reviewPostMethod.postReviewContent(
                       namecontroller.text,
                       phoneController.text,
                       emailController.text,
@@ -108,7 +129,12 @@ class _ReviewContentState extends State<ReviewContent> {
                       widget.star.toInt(),
                     );
 
-                    showToast('Review successfully Updated');
+                    if (data == 'success') {
+                      showToast('Review successfully Updated');
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const AppointmentBooked(),
+                      ));
+                    }
                   } catch (e) {
                     print('Error Posting details: $e');
                   }
@@ -134,6 +160,22 @@ class _ReviewContentState extends State<ReviewContent> {
     );
   }
 
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email address.';
+    }
+
+    // Define a regular expression for a valid email format
+    final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+
+    if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email address.';
+    }
+
+    // Return null if the email is valid
+    return null;
+  }
+
   void showToast(String message) {
     Fluttertoast.showToast(
       msg: message,
@@ -153,12 +195,14 @@ class ReviewTextForm extends StatelessWidget {
   final double height;
   final TextInputType inputType;
   final int? maxLine;
+  final String? Function(String?)? validator;
   const ReviewTextForm(
       {super.key,
       required this.labelText,
       required this.controller,
       required this.height,
       required this.inputType,
+      required this.validator,
       this.maxLine});
 
   @override
@@ -176,6 +220,7 @@ class ReviewTextForm extends StatelessWidget {
             controller: controller,
             maxLines: 10,
             maxLength: maxLine,
+            validator: validator,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               hintText: labelText,
