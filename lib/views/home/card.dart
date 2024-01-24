@@ -189,83 +189,23 @@ class _CategoryCardState extends State<CategoryCard> {
                           SizedBox(
                             width: Responsive.isMobile(context)
                                 ? MediaQuery.sizeOf(context).width / 1.9
-                                : MediaQuery.sizeOf(context).width / 1.5,
+                                : MediaQuery.sizeOf(context).width / 1.7,
                           ),
                           ClipRRect(
                             child: SizedBox(
-                              height: Responsive.isDesktop(context) &&
-                                      Responsive.isMobile(context)
-                                  ? MediaQuery.of(context).size.height * 0.2
-                                  : MediaQuery.sizeOf(context).height * 0.0,
-                              width: Responsive.isDesktop(context)
-                                  ? MediaQuery.of(context).size.width * 0.1
-                                  : MediaQuery.sizeOf(context).width * 0.20,
-                              child: CachedNetworkImage(
-                                  color: bgColor,
-                                  imageUrl: 'assets/logo.png',
-                                  fit: BoxFit.fitHeight,
-                                  imageBuilder: (context, imageProvider) =>
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: double.maxFinite,
-                                            decoration: BoxDecoration(
-                                                color: bgColor,
-                                                image: DecorationImage(
-                                                    image: imageProvider,
-                                                    fit: BoxFit.fill)),
-                                          ),
-                                        ),
-                                      ),
-                                  progressIndicatorBuilder: (context, url,
-                                          downloadProgress) =>
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: double.maxFinite,
-                                            decoration: const BoxDecoration(
-                                              color: whiteColor,
-                                            ),
-                                            child:
-                                                const CupertinoActivityIndicator(),
-                                          ),
-                                        ),
-                                      ),
-                                  errorWidget: (context, url, error) => Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 0, right: 0, bottom: 0),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            height: double.maxFinite,
-                                            decoration: const BoxDecoration(
-                                              color: bgColor,
-                                            ),
-                                            child: Icon(
-                                              Icons.error,
-                                              color:
-                                                  whiteColor.withOpacity(0.9),
-                                            ),
-                                          ),
-                                        ),
+                                height: Responsive.isDesktop(context)
+                                    ? MediaQuery.of(context).size.height * 0.2
+                                    : MediaQuery.sizeOf(context).height * 0.05,
+                                width: Responsive.isDesktop(context)
+                                    ? MediaQuery.of(context).size.width * 0.1
+                                    : MediaQuery.sizeOf(context).width * 0.20,
+                                child: Responsive.isDesktop(context)
+                                    ? Image.network(
+                                        'assets/Scanet Logo.png',
+                                      )
+                                    : Image.asset(
+                                        'assets/Scanet Logo.png',
                                       )),
-                            ),
                           ),
                         ],
                       ),

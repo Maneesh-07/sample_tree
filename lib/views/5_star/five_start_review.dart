@@ -61,12 +61,6 @@ class ReviewGridView extends StatefulWidget {
     'Airbnb',
   ];
 
-  static const List<String> imagesContent = [
-    'assets/google.png',
-    'assets/tripadvisor.png',
-    'assets/booking_com.png',
-    'assets/airbnb.png',
-  ];
 
   @override
   State<ReviewGridView> createState() => _ReviewGridViewState();
@@ -337,12 +331,12 @@ class ContainerFollowWidget extends StatelessWidget {
 
     if (details.label == 'Google' && link != null) {
       _launchUrl(link.url);
-    } else if (details.label == '' && link != null) {
+    } else if (details.label == 'Booking.com' && link != null) {
       _launchUrl(link.url);
-    } else if (details.label == '' && link != null) {
+    } else if (details.label == 'Airbnb' && link != null) {
       _launchUrl(link.url);
-    } else if (details.label == '' && link != null) {
-      launchEmail(link.url);
+    } else if (details.label == 'Trip Advisor' && link != null) {
+      _launchUrl(link.url);
     }
   }
 

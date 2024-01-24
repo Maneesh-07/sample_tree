@@ -50,7 +50,7 @@ class _DashBoardState extends State<DashBoard> {
           child: Scaffold(
             backgroundColor: scaffoldBgColor,
             appBar: AppBar(
-              elevation: 4,
+              elevation: 0,
               backgroundColor: scaffoldBgColor,
               actions: [
                 CustomAppBar(isScrolled: _isScrolled,tittle: '',),
