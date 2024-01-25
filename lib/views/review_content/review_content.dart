@@ -120,7 +120,6 @@ class _ReviewContentState extends State<ReviewContent> {
               kHeight,
               TextButton(
                 onPressed: () async {
-                  showToast('Please Wait..!!');
                   try {
                     final data = await reviewPostMethod.postReviewContent(
                       namecontroller.text,
@@ -131,7 +130,6 @@ class _ReviewContentState extends State<ReviewContent> {
                     );
 
                     if (data == 'success') {
-                      showToast('Review successfully Updated');
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const AppointmentBooked(),
                       ));

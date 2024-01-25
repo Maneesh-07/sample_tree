@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/main.dart';
 import 'package:sample_tree/responsive.dart';
@@ -22,11 +23,11 @@ class AppointmentBooked extends StatelessWidget {
                     height: MediaQuery.sizeOf(context).height / 20,
                   ),
                   Responsive.isMobile(context)
-                      ? Image.asset(
-                          'assets/success.gif',
+                      ? Lottie.asset(
+                          'assets/success.json',
                           height: MediaQuery.sizeOf(context).height / 2.5,
                         )
-                      : Image.network('assets/success.gif'),
+                      : Lottie.network('assets/success.json'),
                   Container(
                     width: double.infinity,
                     alignment: Alignment.center,
