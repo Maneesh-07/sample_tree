@@ -4,7 +4,7 @@ import 'package:sample_tree/constant/constant.dart';
 import 'package:sample_tree/views/home/home_dash.dart';
 import 'dart:js' as js;
 
-String? uid;
+String? uid ;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   uid = js.context['myParam'];

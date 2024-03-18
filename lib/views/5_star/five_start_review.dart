@@ -54,14 +54,6 @@ class ReviewGridView extends StatefulWidget {
   final int crossAxisCount;
   final double childAspectRatio;
 
-  static const List<String> contentNames = [
-    'Google',
-    'Trip Advisor',
-    'Booking.com',
-    'Airbnb',
-  ];
-
-
   @override
   State<ReviewGridView> createState() => _ReviewGridViewState();
 }
@@ -92,8 +84,12 @@ class _ReviewGridViewState extends State<ReviewGridView> {
                   return const Text("No Products Available");
                 }
 
-                final details = snapshot.data;
-
+                final details = snapshot.data!.where((item) {
+                  final link =
+                      item.socialLinks.isNotEmpty ? item.socialLinks[0] : null;
+                  final linkUrl = link?.url;
+                  return linkUrl != null && linkUrl.isNotEmpty;
+                }).toList();
                 return GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -103,7 +99,7 @@ class _ReviewGridViewState extends State<ReviewGridView> {
                     crossAxisSpacing: defaultPadding,
                     mainAxisSpacing: defaultPadding,
                   ),
-                  itemCount: details!.length,
+                  itemCount: details.length,
                   itemBuilder: (BuildContext context, int index) =>
                       ContainerFollowWidget(
                     details: details[index],
